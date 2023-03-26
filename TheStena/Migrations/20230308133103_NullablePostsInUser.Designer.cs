@@ -12,8 +12,8 @@ using TheStena.Models;
 namespace TheStena.Migrations
 {
     [DbContext(typeof(StenaDBContext))]
-    [Migration("20230307080021_SeedAdded")]
-    partial class SeedAdded
+    [Migration("20230308133103_NullablePostsInUser")]
+    partial class NullablePostsInUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,7 +100,7 @@ namespace TheStena.Migrations
                         {
                             Id = 1,
                             AuthorId = 1,
-                            CreatedDate = new DateTime(2023, 3, 7, 14, 0, 21, 52, DateTimeKind.Local).AddTicks(2298),
+                            CreatedDate = new DateTime(2023, 3, 8, 19, 31, 3, 535, DateTimeKind.Local).AddTicks(8794),
                             Downvotes = 2,
                             Title = "Dog's post 1",
                             Upvotes = 4
@@ -109,7 +109,7 @@ namespace TheStena.Migrations
                         {
                             Id = 2,
                             AuthorId = 1,
-                            CreatedDate = new DateTime(2023, 3, 7, 14, 0, 21, 52, DateTimeKind.Local).AddTicks(2300),
+                            CreatedDate = new DateTime(2023, 3, 8, 19, 31, 3, 535, DateTimeKind.Local).AddTicks(8796),
                             Downvotes = 7,
                             Title = "Dog's post 2",
                             Upvotes = 60
@@ -118,7 +118,7 @@ namespace TheStena.Migrations
                         {
                             Id = 3,
                             AuthorId = 2,
-                            CreatedDate = new DateTime(2023, 3, 7, 14, 0, 21, 52, DateTimeKind.Local).AddTicks(2301),
+                            CreatedDate = new DateTime(2023, 3, 8, 19, 31, 3, 535, DateTimeKind.Local).AddTicks(8797),
                             Downvotes = 30,
                             Title = "Cat's post 1",
                             Upvotes = 15
@@ -148,13 +148,13 @@ namespace TheStena.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2023, 3, 7, 14, 0, 21, 52, DateTimeKind.Local).AddTicks(2210),
+                            CreatedDate = new DateTime(2023, 3, 8, 19, 31, 3, 535, DateTimeKind.Local).AddTicks(8701),
                             Name = "Dog"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2023, 3, 7, 14, 0, 21, 52, DateTimeKind.Local).AddTicks(2219),
+                            CreatedDate = new DateTime(2023, 3, 8, 19, 31, 3, 535, DateTimeKind.Local).AddTicks(8710),
                             Name = "Cat"
                         },
                         new

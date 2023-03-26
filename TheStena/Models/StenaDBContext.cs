@@ -1,34 +1,51 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Security.Cryptography;
+using System.Text;
+using Microsoft.EntityFrameworkCore;
 
 namespace TheStena.Models
 {
-    public class StenaContext : DbContext
+    public class StenaDBContext : DbContext
     {
-        public StenaContext(DbContextOptions options) : base(options)
+        public StenaDBContext(DbContextOptions options) : base(options)
         {
 
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //modelBuilder.Entity<User>()
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
                     Id = 1,
                     Name = "Dog",
+                    PasswordHash = MD5.HashData(Encoding.UTF8.GetBytes(new string("password1"))),  
+                    Role = "OP",
                     CreatedDate = DateTime.Now
                 },
                 new User
                 {
                     Id = 2,
                     Name = "Cat",
+                    PasswordHash = MD5.HashData(Encoding.UTF8.GetBytes(new string("password2"))),
+                    Role = "OP",
                     CreatedDate = DateTime.Now
                 },
                 new User
                 {
                     Id = 3,
                     Name = "Pastor",
+                    PasswordHash = MD5.HashData(Encoding.UTF8.GetBytes(new string("password3"))),
+                    Role = "OP",
                     CreatedDate = new DateTime(2023, 1, 4)
+                },
+                new User
+                {
+                    Id = 4,
+                    Name = "Admin",
+                    PasswordHash = MD5.HashData(Encoding.UTF8.GetBytes(new string("password"))),
+                    Role = "admin",
+                    CreatedDate = DateTime.Now
                 }); 
 
             modelBuilder.Entity<Post>().HasData(

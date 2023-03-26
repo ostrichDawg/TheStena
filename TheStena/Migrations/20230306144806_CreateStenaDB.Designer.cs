@@ -10,7 +10,7 @@ using TheStena.Models;
 
 namespace TheStena.Migrations
 {
-    [DbContext(typeof(StenaContext))]
+    [DbContext(typeof(StenaDBContext))]
     [Migration("20230306144806_CreateStenaDB")]
     partial class CreateStenaDB
     {

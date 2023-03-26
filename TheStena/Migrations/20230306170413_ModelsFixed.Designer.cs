@@ -11,7 +11,7 @@ using TheStena.Models;
 
 namespace TheStena.Migrations
 {
-    [DbContext(typeof(StenaContext))]
+    [DbContext(typeof(StenaDBContext))]
     [Migration("20230306170413_ModelsFixed")]
     partial class ModelsFixed
     {

@@ -10,7 +10,7 @@ using TheStena.Models;
 
 namespace TheStena.Migrations
 {
-    [DbContext(typeof(StenaContext))]
+    [DbContext(typeof(StenaDBContext))]
     partial class StenaContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -97,7 +97,7 @@ namespace TheStena.Migrations
                         {
                             Id = 1,
                             AuthorId = 1,
-                            CreatedDate = new DateTime(2023, 3, 7, 14, 0, 21, 52, DateTimeKind.Local).AddTicks(2298),
+                            CreatedDate = new DateTime(2023, 3, 15, 18, 35, 30, 568, DateTimeKind.Local).AddTicks(4159),
                             Downvotes = 2,
                             Title = "Dog's post 1",
                             Upvotes = 4
@@ -106,7 +106,7 @@ namespace TheStena.Migrations
                         {
                             Id = 2,
                             AuthorId = 1,
-                            CreatedDate = new DateTime(2023, 3, 7, 14, 0, 21, 52, DateTimeKind.Local).AddTicks(2300),
+                            CreatedDate = new DateTime(2023, 3, 15, 18, 35, 30, 568, DateTimeKind.Local).AddTicks(4162),
                             Downvotes = 7,
                             Title = "Dog's post 2",
                             Upvotes = 60
@@ -115,7 +115,7 @@ namespace TheStena.Migrations
                         {
                             Id = 3,
                             AuthorId = 2,
-                            CreatedDate = new DateTime(2023, 3, 7, 14, 0, 21, 52, DateTimeKind.Local).AddTicks(2301),
+                            CreatedDate = new DateTime(2023, 3, 15, 18, 35, 30, 568, DateTimeKind.Local).AddTicks(4164),
                             Downvotes = 30,
                             Title = "Cat's post 1",
                             Upvotes = 15
@@ -137,6 +137,14 @@ namespace TheStena.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");
@@ -145,20 +153,34 @@ namespace TheStena.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2023, 3, 7, 14, 0, 21, 52, DateTimeKind.Local).AddTicks(2210),
-                            Name = "Dog"
+                            CreatedDate = new DateTime(2023, 3, 15, 18, 35, 30, 568, DateTimeKind.Local).AddTicks(3938),
+                            Name = "Dog",
+                            PasswordHash = new byte[] { 124, 106, 24, 11, 54, 137, 106, 10, 140, 2, 120, 126, 234, 251, 14, 76 },
+                            Role = "OP"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2023, 3, 7, 14, 0, 21, 52, DateTimeKind.Local).AddTicks(2219),
-                            Name = "Cat"
+                            CreatedDate = new DateTime(2023, 3, 15, 18, 35, 30, 568, DateTimeKind.Local).AddTicks(3963),
+                            Name = "Cat",
+                            PasswordHash = new byte[] { 108, 183, 95, 101, 42, 155, 82, 121, 142, 182, 207, 34, 1, 5, 124, 115 },
+                            Role = "OP"
                         },
                         new
                         {
                             Id = 3,
                             CreatedDate = new DateTime(2023, 1, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Pastor"
+                            Name = "Pastor",
+                            PasswordHash = new byte[] { 129, 155, 6, 67, 214, 184, 157, 201, 181, 121, 253, 252, 144, 148, 242, 142 },
+                            Role = "OP"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedDate = new DateTime(2023, 3, 15, 18, 35, 30, 568, DateTimeKind.Local).AddTicks(3989),
+                            Name = "Admin",
+                            PasswordHash = new byte[] { 95, 77, 204, 59, 90, 167, 101, 214, 29, 131, 39, 222, 184, 130, 207, 153 },
+                            Role = "admin"
                         });
                 });
 
@@ -184,7 +206,7 @@ namespace TheStena.Migrations
             modelBuilder.Entity("TheStena.Models.Post", b =>
                 {
                     b.HasOne("TheStena.Models.User", "Author")
-                        .WithMany("Posts")
+                        .WithMany()
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -200,11 +222,6 @@ namespace TheStena.Migrations
             modelBuilder.Entity("TheStena.Models.Post", b =>
                 {
                     b.Navigation("Comments");
-                });
-
-            modelBuilder.Entity("TheStena.Models.User", b =>
-                {
-                    b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
         }
