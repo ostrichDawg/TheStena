@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TheStena.Models;
 
@@ -11,9 +12,11 @@ using TheStena.Models;
 namespace TheStena.Migrations
 {
     [DbContext(typeof(StenaDBContext))]
-    partial class StenaContextModelSnapshot : ModelSnapshot
+    [Migration("20230326144324_CommentRowChange")]
+    partial class CommentRowChange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

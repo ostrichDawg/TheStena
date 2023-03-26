@@ -118,7 +118,7 @@ app.MapPost("/login", [AllowAnonymous] async (UserLoginData userLD, StenaDBConte
                                      claims: claims,
                                      expires: DateTime.Now.AddDays(1),
                                      signingCredentials: credentials);
-        
+
     var stringToken = new JwtSecurityTokenHandler().WriteToken(token);
 
     return Results.Ok(stringToken);
@@ -158,17 +158,17 @@ app.MapGet("/users/{name}", [Authorize] async (string name, StenaDBContext db) =
 
     return Results.Ok(userDTO);
 });
- 
+
 app.MapPut("/profile/configure", [Authorize] async (StenaDBContext db, UserLoginData inputUser, HttpContext httpContext) =>
 {
     var userName = httpContext.User.FindFirstValue(ClaimTypes.Name);
     if (userName == null)
         return Results.Unauthorized();
-    
+
     var user = await db.Users.FirstOrDefaultAsync(u => u.Name == userName);
     if (user == null)
         return Results.Unauthorized();
-    
+
     user.Name = inputUser.Name;
     user.PasswordHash = MD5.HashData(Encoding.UTF8.GetBytes(inputUser.Password));
 
@@ -193,7 +193,7 @@ app.MapDelete("/profile/delete", [Authorize] async (StenaDBContext db, HttpConte
     return Results.Ok();
 });
 
-app.MapDelete("/profile/delete/{id}", [Authorize(Roles = "admin")] async (StenaDBContext db, 
+app.MapDelete("/profile/delete/{id}", [Authorize(Roles = "admin")] async (StenaDBContext db,
     HttpContext httpContext, int id) =>
 {
     var user = await db.Users.FindAsync(id);
@@ -208,7 +208,7 @@ app.MapDelete("/profile/delete/{id}", [Authorize(Roles = "admin")] async (StenaD
 
 app.MapGet("/stena", [AllowAnonymous] async (StenaDBContext db) =>
 {
-    var posts = await db.Posts.Include(p => p.Author).ToListAsync();
+    var posts = await db.Posts.Include(p => p.Author).Include(p => p.Comments).ToListAsync();
 
     return Results.Ok(posts);
 });
@@ -222,6 +222,33 @@ app.MapGet("/users/{name}/posts", [AllowAnonymous] async (StenaDBContext db, str
     var posts = await db.Posts.Where(p => p.AuthorId == user.Id).ToListAsync();
 
     return Results.Ok(posts);
+});
+
+app.MapPut("/posts/{id}", [Authorize] async (int id, CommentDTO comment, StenaDBContext db, HttpContext httpContext) =>
+{
+    var post = await db.Posts.FindAsync(id);
+    if (post == null)
+        return Results.NotFound();
+
+    var username = httpContext.User.FindFirstValue(ClaimTypes.Name);
+    if (username == null)
+        return Results.Unauthorized();
+
+    var user = await db.Users.FirstOrDefaultAsync(u => u.Name == username);
+    if (user == null)
+        return Results.Unauthorized();
+
+    Comment newComment = new Comment()
+    {
+        Text = comment.Text,
+        AurhtorId = user.Id,
+        PostId = id
+    };
+
+    await db.Comments.AddAsync(newComment);
+    await db.SaveChangesAsync();
+
+    return Results.Ok(comment);
 });
 
 app.UseAuthentication();
